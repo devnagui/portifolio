@@ -24,5 +24,11 @@ git config alias.s "status -s"
 echo "Configuring alias 'lg' for 'log decoration' .."
 git config alias.lg "log --oneline --decoration --all --graph"
 
+echo "Configuring username and email"
+git config --global user.email "dev.nathan.guimaraes@gmail.com"
+git config --global user.name "devnagui"
+
+
+
 echo "End of basic configuration.."
 

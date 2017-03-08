@@ -1,3 +1,7 @@
 {
-  "name": "web"
+  "name": "web",
+  "run_list": [
+    "recipe[apache]",
+    "recipe[apache::motd]"
+  ]
 }

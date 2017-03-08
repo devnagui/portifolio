@@ -12,6 +12,13 @@ elsif node['plataform_family'] == 'debian'
 	package = "apache2"
 end
 
+webnodes = search('node','role:web')
+
+webnodes.each do |node|
+	puts node
+
+end
+
 package 'webserver' do
 	package_name package
 	action :install

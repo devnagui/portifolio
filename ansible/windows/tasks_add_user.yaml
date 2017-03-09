@@ -1,0 +1,12 @@
+- name: Disabling execution policy to execute remote scripts
+  win_shell: "Set-ExecutionPolicy Unrestricted"
+  args:
+   executable: powershell.exe 
+
+- name: Quering to verify user existence
+  win_user: "name={{ user }} groups={{ group }} password={{ password }} state=query"
+  register: user_query
+  
+- name: Creating an user if it exists in the server
+  win_user: "name={{ user }} state=present password={{ password }} groups={{ group }} groups_action='{{ action }}' update_password=always"
+  when: "('{{ user_query.state }}' == 'absent') or ('{{ action }}' == 'replace')" 

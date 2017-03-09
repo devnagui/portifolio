@@ -1,0 +1,60 @@
+--- #This is an Ansible script to change the user password from all Windows machines
+- hosts: '{{ hosts }}'
+  vars:
+    - jenkins_home: 'C:\\resources-folder\\'
+    - jenkins_tools: '{{jenkins_home}}tools\\'
+    - tools_url: "http://url-to-find-tools-directory:port/app/some-tools-directory-compacted.7z"
+
+  gather_facts: yes
+
+  vars_prompt:
+    - name : "hosts"
+      prompt: "Enter the HOSTS that you wish to apply this playbook or leave it blank for 'test'"
+      private: no
+     
+  tasks:
+    - include: tasks_disable_proxy.yaml 
+    
+    - include: tasks_install_chocolatey.yaml 
+  
+    - name: Creating tools directory.
+      win_file : "path={{jenkins_tools}} state=anbsent"   
+  
+    - name: Deleting jenkins home directory.
+      win_file : "path={{jenkins_home}} state=directory"
+      
+    - name: Downloading tools from Artifactory.
+      win_get_url: "dest='{{jenkins_tools}}tools.7z' url='{{tools_url}}' force=yes"
+     
+    - include: tasks_install_chocolatey_package.yaml package_name=7zip.portable
+
+    - name: Unpacking tools file.
+      win_shell: "7z e {{jenkins_tools}}tools.7z -o{{jenkins_tools}} -spf -y "
+
+    - name : Setting environment variables.
+      win_environment : "state=present level=machine name={{ item.name }} value={{ item.path }}"
+      with_items:
+        - { name: 'SLAVE_HOME',   path: '{{ jenkins_home }}' }
+        - { name: 'SLAVE_TOOLS',  path: '{{ jenkins_tools }}' }
+        - { name: 'JAVA_HOME',    path: '{{ jenkins_tools }}java' }
+        - { name: 'MAVEN_HOME',   path: '{{ jenkins_tools }}maven' }
+        - { name: 'M2_HOME',      path: '{{ jenkins_tools }}maven' }
+        - { name: 'ANT_HOME',     path: '{{ jenkins_tools }}ant' }
+        - { name: 'GIT_HOME',     path: '{{ jenkins_tools }}git' }
+        - { name: 'GIT_SSH',      path: '{{ jenkins_tools }}git\usr\bin\ssh.exe' }
+    
+    - name : Setting windows path variables.
+      win_path : "state=present name={{ item.name }} elements={{ item.path }}"
+      with_items:
+        - { name: 'PATH',   path: '%JAVA_HOME%\bin' }
+        - { name: 'PATH',   path: '%MAVEN_HOME%\bin' }
+        - { name: 'PATH',   path: '%ANT_HOME%\bin' }
+        - { name: 'PATH',   path: '%GIT_HOME%\bin' }
+        - { name: 'PATH',   path: '%GIT_SSH%' }
+        
+    - name: Copying Jenkins configurations files
+      win_copy: "src=resources-folder/ dest={{jenkins_home}}"
+    
+    - name: Waiting for the machine to reboot after execution
+      win_reboot: ""
+...

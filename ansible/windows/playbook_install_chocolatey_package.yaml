@@ -1,0 +1,17 @@
+--- #This is an Ansible script to change the user password from all Windows machines
+- hosts: '{{ hosts }}'
+  gather_facts: yes
+  vars_prompt:
+    hosts: "Please enter the hosts list that you wish to run this script"
+    package_name: "Please enter the package name that you wish to install"
+  tasks:
+
+    - include: tasks_disable_proxy.yaml
+    
+    - include: tasks_install_chocolatey.yaml
+          
+    - include: tasks_install_chocolatey_package.yaml package_name='{{package_name}}'
+    
+    - include: tasks_enable_proxy.yaml
+
+...

@@ -1,0 +1,25 @@
+--- #This is an Ansible script to change the user password from all Windows machines
+# -K works for ask the local user administrator password, to modif the /etc/ansible/hosts adding the new hosts
+# The -K parameter can be passed as an extra parameters with the '-e "ansible_become_pass=password"' option
+- hosts: local
+  gather_facts: yes
+  become: yes
+  vars_prompt:
+    - name : "new_host"
+      prompt: "Enter the HOST ip that will be added into production group"
+      private: no
+    - name : "group"
+      prompt: "Enter the GROUP which this host will be insered"
+      private: no
+    
+  tasks:
+   
+    - name: Adding new server to /etc/ansible/hosts file
+      lineinfile:
+        path: /etc/ansible/hosts
+        insertafter: '^.{{group}}.'
+        line: '{{new_host}}'
+        unsafe_writes: true
+
+  
+...

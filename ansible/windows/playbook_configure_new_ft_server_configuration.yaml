@@ -1,0 +1,78 @@
+--- #This is an Ansible script to change the user password from all Windows machines
+- hosts: '{{ new_host }}'
+  become: no
+  vars:
+    - jenkins_home: 'C:\\resources-folder\\'
+    - jenkins_tools: '{{jenkins_home}}tools\\'
+    - chocolatey_tools: !unsafe '%ChocolateyInstall%\tools'
+    - slaves_service_bat: !unsafe 'C:\jenkins-slaves\slaves\start_slaves.bat'
+    - tools_url: !unsafe  'http://url-to-tools/tools-compacted.7z'
+  gather_facts: yes
+
+    
+  tasks:
+   
+    - include: tasks_add_user.yaml user='ansible' password=ansible group='Administrators' action='add'
+
+    - name: Copying template for Jenkins configurations folder
+      win_copy: "src=resources-folder/ dest=C:\\jenkins_template_folder\\"
+
+    - name: Creating an empty jenkins home directory.
+      win_robocopy : "src=C:\\jenkins_template_folder\\ dest={{jenkins_home}} purge=true recurse=true"
+ 
+    - name: Deleting template folder.
+      win_file : "path=C:\\jenkins_template_folder\\ state=absent"
+
+    - name: Creating tools directory.
+      win_file : "path={{jenkins_tools}} state=directory"
+        
+    - name: Downloading tools from Artifactory.
+      win_get_url: "dest='{{jenkins_tools}}tools.7z' url='{{tools_url}}' force=yes"    
+
+    - include: tasks_disable_proxy.yaml 
+    
+    - include: tasks_install_chocolatey.yaml 
+
+    - include: tasks_install_chocolatey_package.yaml package_name=7zip
+     
+    - include: tasks_install_chocolatey_package.yaml package_name=nssm
+
+    - name : Setting 7ZIP to Path variable.
+      win_path : "state=present scope=machine name=PATH elements='{{ chocolatey_tools }}' "
+
+    - name: Unpacking tools file.
+      win_shell: "7z e {{jenkins_tools}}tools.7z -o{{jenkins_tools}} -spf -y "
+
+    - name : Setting tools environment variables.
+      win_environment : "state=present  level=machine name={{ item.name }} value={{ item.path }}"
+      with_items:
+        - { name: '7ZIP',         path: '{{ chocolatey_tools }}' }
+        - { name: 'SLAVE_HOME',   path: '{{ jenkins_home }}' }
+        - { name: 'SLAVE_TOOLS',  path: '{{ jenkins_tools }}' }
+        - { name: 'JAVA_HOME',    path: '{{ jenkins_tools }}java' }
+        - { name: 'MAVEN_HOME',   path: '{{ jenkins_tools }}maven' }
+        - { name: 'M2_HOME',      path: '{{ jenkins_tools }}maven' }
+        - { name: 'ANT_HOME',     path: '{{ jenkins_tools }}ant' }
+        - { name: 'GIT_HOME',     path: '{{ jenkins_tools }}git' }
+        - { name: 'GIT_SSH',      path: '{{ jenkins_tools }}git\usr\bin\ssh.exe' }
+    
+    - name : Setting tools in windows path variables.
+      win_path : "state=present scope=machine name={{ item.name }} elements={{ item.path }}"
+      with_items:
+        - { name: 'PATH',   path: '%7ZIP%' }
+        - { name: 'PATH',   path: '%JAVA_HOME%\bin' }
+        - { name: 'PATH',   path: '%MAVEN_HOME%\bin' }
+        - { name: 'PATH',   path: '%ANT_HOME%\bin' }
+        - { name: 'PATH',   path: '%GIT_HOME%\bin' }
+        - { name: 'PATH',   path: '%GIT_SSH%' }
+
+    - include: tasks_enable_proxy.yaml 
+   
+    - name: Installing slaves as services
+      win_shell: "executable=powershell.exe nssm install Jenkins_Slaves {{slaves_service_bat}} "
+
+    - name: Waiting for the machine to reboot after execution
+      win_reboot: ""
+    
+
+...

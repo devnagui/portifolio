@@ -1,0 +1,16 @@
+- name: Disabling execution policy to execute remote scripts
+  win_shell: "Set-ExecutionPolicy Unrestricted"
+  args:
+    executable: powershell.exe 
+
+- name: Checking chocolatey existence
+  win_shell:  "choco version"
+  args:
+    executable: powershell.exe 
+  register: chocolatey_existence_stdout
+  
+- name: Installing chocolatey if it doesnt exists
+  win_shell: "iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex"
+  args:
+    executable: powershell.exe 
+  when: chocolatey_existence_stdout.stdout.find("Chocolatey") != -1

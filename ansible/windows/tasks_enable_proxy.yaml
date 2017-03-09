@@ -1,0 +1,8 @@
+- name: Enabling Firewall before package installation
+  action: win_shell REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 1 /f 
+
+- name: Enabling auto detection of proxy/network settings
+  action: win_shell REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v AutoDetect /t REG_DWORD /d 1 /f
+  
+- name: Disabling protected mode internet explorer settings
+  action: win_shell REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\3" /v 2500 /t REG_DWORD /d 0 /f  

@@ -1,0 +1,4 @@
+- name: Installing package
+  win_shell: "choco install {{ package_name }} -yf"
+  args:
+   executable: powershell.exe 

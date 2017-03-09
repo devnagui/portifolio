@@ -1,0 +1,27 @@
+--- #This is an Ansible script to change the user password from all Windows machines
+# This file should be run like: ansible-playbook <script-name>.yaml
+# It will ask for the hosts/user/password and change that specific user password if it exists in the hosts servers. 
+- hosts: '{{ hosts }}'
+  gather_facts: yes
+  vars_prompt:
+    - name: "hosts"
+      prompt: "Please enter the HOSTS that you wish to run this script"
+      private: no
+    - name: "user"
+      prompt: "Please enter the USER name that you want to change the password"
+      private: no
+    - name: "password"
+      prompt: "Please enter the PASSWORD for the user"
+      private: no
+  tasks:
+    - name: Disabling execution policy to execute remote scripts
+      win_shell: "@powershell Set-ExecutionPolicy Unrestricted"
+
+    - name: Quering to verify user existence
+      win_user: "name={{ user }} state=query"
+      register: user_query
+      
+    - name: Creating an user if it exists in the server
+      win_user: "name={{ user }} state=present password={{ password }}"
+      when: "'{{ user_query.state }}' != 'absent'" 
+...

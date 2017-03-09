@@ -1,0 +1,35 @@
+--- #This is an Ansible script to completly configure a server to FT.
+# Command template: ansible-playbook playbook_new_server.yaml -K
+# -K works for ask the local user administrator password, to modif the /etc/ansible/hosts adding the new hosts
+# The -K parameter can be passed as an extra parameters with the '-e "ansible_become_pass=password"' option
+# The playbook will ask for the Windows USER and PASS for the first connection. 
+# This script should NOT be used into a running and configured FT server connected to Jenkins.
+
+- name: play1
+  hosts: local
+  become: yes
+
+  
+  vars_prompt:
+    - name : "new_host"
+      prompt: "Enter the HOST ip that will be added into production group"
+      private: no
+    - name : "windows_conn_user"
+      prompt: "Enter the USER used to first connect to the machine"
+      private: no
+    - name : "windows_conn_pass"
+      prompt: "Enter the PASSWORD used to first connect to the machine"
+      private: no
+  tasks: 
+    - name: Adding new server to production hosts
+      add_host: "name={{new_host}} groups=production" 
+      
+    - name: Add new server to /etc/ansible/hosts file
+      lineinfile:
+        path: /etc/ansible/hosts
+        insertafter: '^.production.'
+        line: '{{new_host}}'
+        unsafe_writes: true
+      
+- include: playbook_configure_new_ft_server_configuration.yaml 
+...

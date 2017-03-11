@@ -41,20 +41,14 @@ public class TriangleIdentificatorBO extends PolygonIdentifactorBO<Triangle> {
 
 	@Override
 	public void classificate(Triangle triangle) {
-		Boolean isScaleneOrNoSidesInCommon = Collections.disjoint(triangle.getSides(),triangle.getSides());
-		if(!isScaleneOrNoSidesInCommon){
-			//From now on we only have 2 options - Equilateral or Isosceles
-			//We now that we have a repeated 2 or 3 repeated sides, if we get the max and min of the sides we can do a Math.max(maxSide,minSide) 
-			//to obtain the total of sides's frequency without do a "for" to count the frequency of each side.
-			Double biggerSide = Collections.max(triangle.getSides());
-			Double smallestSide = Collections.min(triangle.getSides());
-			int smallestSideFrequency= Collections.frequency(triangle.getSides(), smallestSide);
-			int biggerSideFrequency  = Collections.frequency(triangle.getSides(), biggerSide);
-			triangle.setTriangleType(TriangleType.getType(Math.max(smallestSideFrequency, biggerSideFrequency)));
-			
-		}else{
-			triangle.setTriangleType(TriangleType.SCALENE);
-		}
+		//From now on we only have 2 options - Equilateral or Isosceles
+		//We now that we have a repeated 2 or 3 repeated sides, if we get the max and min of the sides we can do a Math.max(maxSide,minSide) 
+		//to obtain the total of sides's frequency without do a "for" to count the frequency of each side.
+		Double biggerSide = Collections.max(triangle.getSides());
+		Double smallestSide = Collections.min(triangle.getSides());
+		int smallestSideFrequency= Collections.frequency(triangle.getSides(), smallestSide);
+		int biggerSideFrequency  = Collections.frequency(triangle.getSides(), biggerSide);
+		triangle.setTriangleType(TriangleType.getType(Math.max(smallestSideFrequency, biggerSideFrequency)));	
 	}
 
 

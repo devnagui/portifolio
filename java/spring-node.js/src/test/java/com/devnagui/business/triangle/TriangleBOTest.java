@@ -59,7 +59,7 @@ public class TriangleBOTest {
 
 	@Test
 	public void testIsoscelesMinSideClassification() throws InvalidPolygonException{
-		Triangle triangle = new Triangle(4.0, 4.0, 3.0);
+		Triangle triangle = new Triangle(3.0, 3.0, 4.0);
 		Mockito.doCallRealMethod().when(triangleBO).classificate(triangle);
 		triangleBO.classificate(triangle);
 		Assert.assertEquals(TriangleType.ISOSCELES,triangle.getTriangleType() );
@@ -67,7 +67,7 @@ public class TriangleBOTest {
 	
 	@Test
 	public void testIsoscelesMaxSideClassification() throws InvalidPolygonException{
-		Triangle triangle = new Triangle(1.0, 2.0, 2.0);
+		Triangle triangle = new Triangle(3.0, 4.0, 4.0);
 		Mockito.doCallRealMethod().when(triangleBO).classificate(triangle);
 		triangleBO.classificate(triangle);
 		Assert.assertEquals(TriangleType.ISOSCELES,triangle.getTriangleType() );

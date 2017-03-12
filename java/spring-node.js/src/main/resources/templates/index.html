@@ -23,7 +23,9 @@
 			<div class="container">
 				<div class="row ">
 					<label ng-show="triangleCtrl.triangle.feedback" class="col-md-1">Feedback:</label>
-					<input name="feedBack" ng-model="triangleCtrl.triangle.feedback" class="col-md-10" ng-show="triangleCtrl.triangle.feedback" />
+					<p name="feedBack" ng-model="triangleCtrl.triangle.feedback" class="col-md-10" ng-show="triangleCtrl.triangle.feedback" >
+						{{triangleCtrl.triangle.feedback}}
+					</p>
 				</div>
 				<div class="row">
 					<label ng-show="triangleCtrl.triangle.triangleType" class="col-md-1">Type:</label>

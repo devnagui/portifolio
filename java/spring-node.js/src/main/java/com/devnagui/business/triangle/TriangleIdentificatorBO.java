@@ -26,13 +26,22 @@ public class TriangleIdentificatorBO extends PolygonIdentifactorBO<Triangle> {
 
 	@Override
 	public void validate(Triangle triangle) throws InvalidTriangleException {
+		
+		if(triangle ==null){
+			throw new InvalidTriangleException("Triangle object is null.");
+		}
 		if(Collections.frequency(triangle.getSides(), null)!=0){
 			throw new InvalidTriangleException("One or more of the sides are null.");
 		}
+		
 		if(Collections.frequency(triangle.getSides(), Double.valueOf(0.0))!=0){
 			throw new InvalidTriangleException("One or more of the sides are zero.");
 		}
-		
+
+		if( Collections.min(triangle.getSides())<0){
+			throw new InvalidTriangleException("One or more of the sides are less than zero.");
+		}
+
 		if(!isValidByConditionOfInequalityOfSides(triangle)){
 			throw new InvalidTriangleException("One of the sides is bigger than the sum of the others.");
 		}
@@ -41,14 +50,22 @@ public class TriangleIdentificatorBO extends PolygonIdentifactorBO<Triangle> {
 
 	@Override
 	public void classificate(Triangle triangle) {
-		//From now on we only have 2 options - Equilateral or Isosceles
-		//We now that we have a repeated 2 or 3 repeated sides, if we get the max and min of the sides we can do a Math.max(maxSide,minSide) 
-		//to obtain the total of sides's frequency without do a "for" to count the frequency of each side.
+		//We can could go check the frequency of each element but we could do this with only two, like that:
 		Double biggerSide = Collections.max(triangle.getSides());
 		Double smallestSide = Collections.min(triangle.getSides());
-		int smallestSideFrequency= Collections.frequency(triangle.getSides(), smallestSide);
 		int biggerSideFrequency  = Collections.frequency(triangle.getSides(), biggerSide);
-		triangle.setTriangleType(TriangleType.getType(Math.max(smallestSideFrequency, biggerSideFrequency)));	
+		int smallestSideFrequency= Collections.frequency(triangle.getSides(), smallestSide);
+		//If the sides are equal and the frequency is 1, that means that each side is repeated only 1 time
+		if(biggerSideFrequency == smallestSideFrequency && biggerSideFrequency == 1){
+			//Scalene
+			triangle.setTriangleType(TriangleType.SCALENE);
+			//We could ask for TriangleType.getType(0) but that would be just redundancy...
+		}else{
+			//Isosceles or Equilateral, max of both will decide..
+			triangle.setTriangleType(TriangleType.getType(Math.max(biggerSideFrequency, smallestSideFrequency)));
+		}
+		
+			
 	}
 
 

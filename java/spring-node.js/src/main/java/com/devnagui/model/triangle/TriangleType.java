@@ -1,5 +1,7 @@
 package com.devnagui.model.triangle;
 
+import java.security.InvalidParameterException;
+
 public enum TriangleType {
 	EQUILATERAL(3),
 	ISOSCELES(2),
@@ -20,8 +22,9 @@ public enum TriangleType {
 			return EQUILATERAL;
 		}else if(ISOSCELES.getNumberOfequalSides().equals(numberOfEqualSides)){
 			return ISOSCELES;
+		}else if(SCALENE.getNumberOfequalSides().equals(numberOfEqualSides)){
+			return SCALENE;
 		}
-		return SCALENE;
-		
+		throw new InvalidParameterException("Wrong number of equals sides.");
 	}
 }

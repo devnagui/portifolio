@@ -21,7 +21,11 @@ public class TriangleBOTest {
 	
 	@Mock
 	TriangleIdentificatorBO triangleBO;
-
+	@Test(expected=InvalidTriangleException.class)
+	public void testInvalidTriangleByTriangleNull() throws InvalidTriangleException{
+		Mockito.doCallRealMethod().when(triangleBO).validate(null);
+		triangleBO.validate(null);
+	}
 	@Test(expected=InvalidTriangleException.class)
 	public void testInvalidTriangleBySideNull() throws InvalidTriangleException{
 		Triangle triangle = new Triangle(null, 1.0, 0.0);
@@ -31,6 +35,12 @@ public class TriangleBOTest {
 	@Test(expected=InvalidTriangleException.class)
 	public void testInvalidTriangleBySideZero() throws InvalidTriangleException{
 		Triangle triangle = new Triangle(3.0, 1.0, 0.0);
+		Mockito.doCallRealMethod().when(triangleBO).validate(triangle);
+		triangleBO.validate(triangle);
+	}
+	@Test(expected=InvalidTriangleException.class)
+	public void testInvalidTriangleBySideLessZero() throws InvalidTriangleException{
+		Triangle triangle = new Triangle(3.0, -1.0, 0.0);
 		Mockito.doCallRealMethod().when(triangleBO).validate(triangle);
 		triangleBO.validate(triangle);
 	}

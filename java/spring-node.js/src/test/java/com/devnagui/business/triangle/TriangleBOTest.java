@@ -113,10 +113,19 @@ public class TriangleBOTest {
 		triangleBO.identify(triangle);
 		Assert.assertEquals(TriangleType.ISOSCELES,triangle.getTriangleType() );
 	}
+
+	@Test(expected=InvalidTriangleException.class)
+	public void testInvalidWholeStackIsocelesIdentificationSuccesss() throws InvalidPolygonException{
+		Triangle triangle = new Triangle(3.0, 1.5, 1.5);
+		Mockito.doCallRealMethod().when(triangleBO).identify(triangle);
+		Mockito.doCallRealMethod().when(triangleBO).validate(triangle);
+		Mockito.doCallRealMethod().when(triangleBO).classificate(triangle);
+		triangleBO.identify(triangle);
+	}
 	
 	@Test
 	public void testCorrectWholeStackScaleneIdentificationSuccesss() throws InvalidPolygonException{
-		Triangle triangle = new Triangle(3.0, 2.0, 1.0);
+		Triangle triangle = new Triangle(14.0, 8.0, 10.0);
 		Mockito.doCallRealMethod().when(triangleBO).identify(triangle);
 		Mockito.doCallRealMethod().when(triangleBO).validate(triangle);
 		Mockito.doCallRealMethod().when(triangleBO).classificate(triangle);

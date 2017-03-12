@@ -82,8 +82,10 @@ public class TriangleIdentificatorBO extends PolygonIdentifactorBO<Triangle> {
 		Double c = triangle.getSides().get(2);
 		return isSideValid(a, b, c) && isSideValid(b, a, c) && isSideValid(c, a, b);
 	}
+
 	private boolean isSideValid(Double sideToTest, Double otherSide1, Double otherSide2) {
-		return sideToTest <= otherSide1 + otherSide2;
+		return (Math.max(otherSide1,otherSide2) - Math.min(otherSide1,otherSide2)) < sideToTest  
+				&& sideToTest < (otherSide1 + otherSide2);
 	}
 
 }

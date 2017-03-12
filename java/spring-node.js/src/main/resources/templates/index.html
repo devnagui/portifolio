@@ -34,9 +34,9 @@
 			</div>
 			<div class="container">
 				<div class="row ">
-					<label class="col-md-1">Side A:</label><input ng-model="triangleCtrl.triangle.sideA" type="number" step="0.01" min="0.01" class="col-md-2" required="true" />
-					<label class="col-md-1">Side B:</label><input ng-model="triangleCtrl.triangle.sideB" type="number" step="0.01" min="0.01" class="col-md-2" required="true" />
-					<label class="col-md-1">Side C:</label><input ng-model="triangleCtrl.triangle.sideC" type="number" step="0.01" min="0.01" class="col-md-2" required="true" />
+					<label class="col-md-1">Side A:</label><input ng-model="triangleCtrl.triangle.sideA" type="number" step="0.01" min="0.01" max="999999" class="col-md-2" required="true" />
+					<label class="col-md-1">Side B:</label><input ng-model="triangleCtrl.triangle.sideB" type="number" step="0.01" min="0.01" max="999999" class="col-md-2" required="true" />
+					<label class="col-md-1">Side C:</label><input ng-model="triangleCtrl.triangle.sideC" type="number" step="0.01" min="0.01" max="999999" class="col-md-2" required="true" />
 					<input name="submit" value="Identify" type="submit" class="col-md-1"/>
 				</div>
 			

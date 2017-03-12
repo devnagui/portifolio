@@ -46,7 +46,7 @@ public class TriangleIdentificatorBO extends PolygonIdentifactorBO<Triangle> {
 		}
 
 		if(!isValidByConditionOfInequalityOfSides(triangle)){
-			throw new InvalidTriangleException("One of the sides is bigger than the sum of the others.");
+			throw new InvalidTriangleException("One side must be smaller than the sum of the others and bigger than the difference of the module of the other two.");
 		}
 	}
 

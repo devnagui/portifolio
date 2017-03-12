@@ -24,9 +24,10 @@ public abstract class PolygonIdentifactorBO<T extends Polygon> implements Serial
 	
 	public abstract void validate(T polygon) throws InvalidPolygonException;
 	
-	public void identify(T polygon) throws InvalidPolygonException{
+	public T identify(T polygon) throws InvalidPolygonException{
 		validate(polygon);
 		classificate(polygon);
+		return polygon;
 	}
 	
 	public abstract void classificate(T polygon);

@@ -1,18 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="pyramid">
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pyramid</title>
-<link th:href="@{/styles.css}" rel="stylesheet" type="text/css" />
-<script type="text/javascript" th:src="@{/angular.js}"></script>
+	<title>Pyramid</title>
+	<link th:href="@{/styles.css}" rel="stylesheet" type="text/css" />
+	<script type="text/css">
+		.ng-invalid.ng-dirty{
+			border-color:RED;
+		}
+		.ng-valid.ng-dirty{
+			border-color:GREEN;
+		}
+	</script>
 </head>
-<body>
+<body  > 
 	<div class="container">
-		<h1>Pyramid</h1>
+		<h1>Triangle Identificator</h1>
+		<form name="triangleForm" ng-controller="TriangleController as triangleCtrl" ng-submit="triangleCtrl.identify()">
+			
+			<div class="container">
+				<div class="row ">
+					<label ng-show="triangleCtrl.triangle.feedback" class="col-md-1">Feedback:</label>
+					<input name="feedBack" ng-model="triangleCtrl.triangle.feedback" class="col-md-10" ng-show="triangleCtrl.triangle.feedback" />
+				</div>
+				<div class="row">
+					<label ng-show="triangleCtrl.triangle.triangleType" class="col-md-1">Type:</label>
+					<input name="triangleType" class="col-md-2" ng-model="triangleCtrl.triangle.triangleType" ng-show="triangleCtrl.triangle.triangleType" />
+				</div>
+			</div>
+			<div class="container">
+				<div class="row ">
+					<label class="col-md-1">Side A:</label><input ng-model="triangleCtrl.triangle.sideA" type="number" step="0.01" min="0.01" class="col-md-2" required="true" />
+					<label class="col-md-1">Side B:</label><input ng-model="triangleCtrl.triangle.sideB" type="number" step="0.01" min="0.01" class="col-md-2" required="true" />
+					<label class="col-md-1">Side C:</label><input ng-model="triangleCtrl.triangle.sideC" type="number" step="0.01" min="0.01" class="col-md-2" required="true" />
+					<input name="submit" value="Identify" type="submit" class="col-md-1"/>
+				</div>
+			
+			</div>
+		</form>
+		
 	</div>
-	<script type="text/javascript" th:src="@{/scripts.js}"></script>
 	
+	<script type="text/javascript" th:src="@{/angular.js}"></script>
+	<script type="text/javascript" th:src="@{/app.js}"></script>
+	<script type="text/javascript" th:src="@{/scripts.js}"></script>
 </body>
 </html>

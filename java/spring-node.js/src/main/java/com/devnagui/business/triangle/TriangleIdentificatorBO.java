@@ -30,6 +30,9 @@ public class TriangleIdentificatorBO extends PolygonIdentifactorBO<Triangle> {
 		if(triangle ==null){
 			throw new InvalidTriangleException("Triangle object is null.");
 		}
+		if(triangle.getSides()==null){
+			throw new InvalidTriangleException("One or more of the sides are null.");
+		}
 		if(Collections.frequency(triangle.getSides(), null)!=0){
 			throw new InvalidTriangleException("One or more of the sides are null.");
 		}

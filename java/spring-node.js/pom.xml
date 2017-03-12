@@ -43,12 +43,15 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
+				
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
+					
 					<webResources>
 						<resource>
 							<directory>${project.build.directory}/grunt/public</directory>
 							<targetPath>public</targetPath>
+							
 						</resource>
 					</webResources>
 				</configuration>

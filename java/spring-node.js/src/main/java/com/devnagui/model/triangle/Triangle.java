@@ -3,8 +3,8 @@ package com.devnagui.model.triangle;
 import com.devnagui.model.Polygon;
 
 /**
+ * We could put final here, but that would be overkill(maybe)
  * @author devnagui
- *
  */
 public class Triangle extends Polygon {
 

@@ -3,6 +3,9 @@ package com.devnagui.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,13 +16,14 @@ import com.devnagui.business.triangle.TriangleIdentificatorBO;
  */
 @SpringBootApplication
 @Controller
+@ComponentScan(basePackages="com.devnagui")
 public class Application {
 	
-	@Autowired
-	private TriangleIdentificatorBO triangleStorageBO;
+	@Autowired()
+	private TriangleIdentificatorBO triangleIdentificatorBO;
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		ConfigurableApplicationContext run = SpringApplication.run(Application.class, args);
 	}
 	
 	@RequestMapping("/")

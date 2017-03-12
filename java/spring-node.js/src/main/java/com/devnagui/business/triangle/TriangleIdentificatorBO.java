@@ -16,7 +16,7 @@ import com.devnagui.model.triangle.TriangleType;
  * Business Object base class for for all Triangles types 
  * @author devnagui
  */
-@Service
+@Service()
 public class TriangleIdentificatorBO extends PolygonIdentifactorBO<Triangle> {
 
 	/**

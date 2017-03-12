@@ -123,6 +123,15 @@ public class TriangleBOTest {
 		triangleBO.identify(triangle);
 	}
 	
+	@Test(expected=InvalidTriangleException.class)
+	public void testInvalidWholeStackScaleneIdentificationSuccesss() throws InvalidPolygonException{
+		Triangle triangle = new Triangle(3.0, 8.0, 11.0);
+		Mockito.doCallRealMethod().when(triangleBO).identify(triangle);
+		Mockito.doCallRealMethod().when(triangleBO).validate(triangle);
+		Mockito.doCallRealMethod().when(triangleBO).classificate(triangle);
+		triangleBO.identify(triangle);
+	}
+
 	@Test
 	public void testCorrectWholeStackScaleneIdentificationSuccesss() throws InvalidPolygonException{
 		Triangle triangle = new Triangle(14.0, 8.0, 10.0);

@@ -1,6 +1,8 @@
 FROM tomcat:9-jre8
-MAINTEINER Nathan Guimaraes "dev.nathan.guimaraes@gmail.com"
+MAINTAINER Nathan Guimaraes "dev.nathan.guimaraes@gmail.com"
 ADD https://github.com/OpenGrok/OpenGrok/releases/download/1.0/opengrok-1.0.tar.gz opengrok-1.0.tar.gz
+RUN tar -zxvf /opengrok-1.0.tar.gz
+RUN mv opengrok-* /opengrok
 RUN mkdir /src
 RUN mkdir /data
 RUN ln -s /data /var/opengrok

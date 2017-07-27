@@ -25,6 +25,7 @@ start_opengrok(){
     OpenGrok index /src
 }
 
-start_opengrok &  
+start_opengrok &
+cron &
 /usr/sbin/sshd -D &
 catalina.sh run

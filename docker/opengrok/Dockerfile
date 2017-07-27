@@ -36,6 +36,8 @@ ENV CLASSPATH /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-j
 
 WORKDIR $CATALINA_HOME
 RUN /opengrok/bin/OpenGrok deploy
+#Change to the disired context_path bellow
+#RUN mv /usr/local/tomcat/webapps/source.war  /usr/local/tomcat/webapps/<desired_context_path_name>.war
 
 EXPOSE 8080
 EXPOSE 22

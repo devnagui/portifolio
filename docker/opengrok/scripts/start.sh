@@ -1,22 +1,5 @@
 #!/bin/bash 
-#===============================================================================
-#
-#          FILE: start.sh
-# 
-#         USAGE: ./start.sh 
-# 
-#   DESCRIPTION: 
-# 
-#       OPTIONS: ---
-#  REQUIREMENTS: ---
-#          BUGS: ---
-#         NOTES: ---
-#        AUTHOR: scue, scue@vip.qq.com
-#  ORGANIZATION: 
-#       CREATED: 07/30/2015 02:08:22 PM CST
-#      REVISION:  ---
-#===============================================================================
-
+#START METHOD FOR THE FIRST INDEXING OF OPENGROK
 start_opengrok(){
     # wait for tomcat startup
     while ! ( ps aux|grep -q org.apache.catalina.startup.Bootstrap ); do
@@ -25,6 +8,7 @@ start_opengrok(){
     OpenGrok index /src
 }
 
+#START ALL NECESSARY SERVICES.
 start_opengrok &
 cron &
 /usr/sbin/sshd -D &
